@@ -1,7 +1,11 @@
 <template>
   <nav class="bg-[#ea7379] w-full shadow-sm sticky top-0 z-50">
     <div class="max-w-285 w-full mx-auto px-4 py-3 flex items-center justify-between">
-      <div class="flex items-center gap-3">
+      <router-link
+        to="/"
+        @click="scrollToTop"
+        class="flex items-center gap-3 hover:opacity-90 transition cursor-pointer"
+      >
         <div
           class="w-10.5 h-10.5 bg-white rounded-full flex items-center justify-center overflow-hidden border-2 border-white shadow-sm"
         >
@@ -12,8 +16,7 @@
           />
         </div>
         <span class="text-white font-bold text-[22px] tracking-wide">RUSA</span>
-      </div>
-
+      </router-link>
       <div class="hidden md:flex items-center space-x-7 text-white font-medium text-[15px]">
         <router-link to="/" class="flex items-center gap-1.5 hover:text-gray-200 transition">
           <i class="fas fa-home text-sm"></i> Home
@@ -138,4 +141,12 @@ onMounted(() => {
     }
   }
 })
+
+// Tambahkan fungsi ini di dalam <script setup>
+const scrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth', // Membuat efek gulir ke atas jadi halus dan estetik
+  })
+}
 </script>
