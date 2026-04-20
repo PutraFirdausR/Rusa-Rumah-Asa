@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import 'tailwindcss';
+
+* {
+  font-family: 'Poppins', 'sans-serif';
+}
+
+/* =========================================
+   1. DEFINISI VARIABEL WARNA TEMA
+========================================= */
+
+/* TEMA DEFAULT (Merah Muda) */
+:root[data-theme='merah'] {
+  --bg-body: #f8fafc;
+  --bg-card: #ffffff;
+  --text-main: #1f2937;
+  --text-muted: #6b7280;
+  --color-primary: #ea7379;
+  --color-secondary: #d9656b;
+  --border-color: #f3f4f6;
+}
+
+/* TEMA BIRU SAMUDRA */
+:root[data-theme='biru'] {
+  --bg-body: #eff6ff;
+  --bg-card: #ffffff;
+  --text-main: #1e3a8a;
+  --text-muted: #64748b;
+  --color-primary: #3b82f6; /* Biru Tailwind */
+  --color-secondary: #2563eb;
+  --border-color: #bfdbfe;
+}
+
+/* TEMA HIJAU ALAM */
+:root[data-theme='hijau'] {
+  --bg-body: #f0fdf4;
+  --bg-card: #ffffff;
+  --text-main: #14532d;
+  --text-muted: #6b7280;
+  --color-primary: #10b981; /* Hijau Tailwind */
+  --color-secondary: #059669;
+  --border-color: #bbf7d0;
+}
+
+/* =========================================
+   2. MAGIC TRICK: OVERRIDE KELAS TAILWIND
+========================================= */
+
+/* Animasi dasar agar perubahan tema terasa mulus */
+body {
+  background-color: var(--bg-body) !important;
+  color: var(--text-main) !important;
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease;
+}
+
+/* Mengubah semua atribut Pink (#ea7379) di seluruh website menjadi warna Tema Aktif */
+[data-theme] .bg-\[\#ea7379\] {
+  background-color: var(--color-primary) !important;
+}
+[data-theme] .text-\[\#ea7379\] {
+  color: var(--color-primary) !important;
+}
+[data-theme] .border-\[\#ea7379\] {
+  border-color: var(--color-primary) !important;
+}
+
+/* Mengubah efek Hover Pink Tua (#d66268 / #d9656b) */
+[data-theme] .hover\:bg-\[\#d66268\]:hover,
+[data-theme] .hover\:bg-\[\#d9656b\]:hover {
+  background-color: var(--color-secondary) !important;
+}
+
+/* Mengubah Gradient Warna Pink di Sidebar & Kartu */
+[data-theme] .from-\[\#ea7379\] {
+  --tw-gradient-from: var(--color-primary) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+[data-theme] .to-\[\#d9656b\] {
+  --tw-gradient-to: var(--color-secondary) !important;
+}
