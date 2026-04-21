@@ -132,7 +132,7 @@ const buttonText = ref('Jadilah Kontributor Artikel Kami')
 // FUNGSI UNTUK MENGHASILKAN DATA DUMMY TERSINKRONISASI
 const seedDatabase = () => {
   let db = JSON.parse(localStorage.getItem('articles_db'))
-  // Jika DB kosong atau masih pakai versi lama (tidak ada subtitle), kita reset agar sinkron
+  // Jika DB kosong atau masih pakai versi lama (tidak ada subtitle), reset agar sinkron
   if (!db || db.length === 0 || db[0].subtitle === undefined) {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'))
     const myEmail = currentUser ? currentUser.email : 'tes@gmail.com'

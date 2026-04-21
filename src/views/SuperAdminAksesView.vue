@@ -4,7 +4,7 @@
     role="superadmin"
     roleName="SUPER ADMIN"
     userEmail="Pusat Kendali"
-    :menus="superAdminMenus"
+    :menu="superAdminMenu"
     @logout="handleLogout"
   >
     <div class="mb-8">
@@ -185,14 +185,14 @@ import { useRouter } from 'vue-router'
 import DashboardLayout from '@/components/DashboardLayout.vue'
 import ModernAlert from '@/components/ModernAlert.vue'
 
-// PANGGIL BRANKAS GLOBAL SINI
+// BRANKAS GLOBAL
 import { globalBanners } from '@/store/bannerStore'
 
 const router = useRouter()
 
 // -- DATA STATE --
 const activePeriode = ref({ tahun: '2025/2026', semester: 'Ganjil' })
-const superAdminMenus = [
+const superAdminMenu = [
   { label: 'Pusat Kendali', path: '/dashboard-superadmin', icon: 'fas fa-server' },
   { label: 'Pengaturan Sekolah', path: '/superadmin-akses', icon: 'fas fa-school' },
 ]
@@ -202,7 +202,7 @@ const daftarKelas = ref([
   { id: 2, nama: 'Kelas Mangga', waliKelas: 'Ibu Sari S.Pd' },
 ])
 
-// GUNAKAN DATA DARI BRANKAS GLOBAL
+// DATA DARI BRANKAS GLOBAL
 const banners = globalBanners
 
 // Fungsi untuk mengetes link

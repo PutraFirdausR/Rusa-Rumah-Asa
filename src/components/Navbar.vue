@@ -125,13 +125,11 @@ const closeMobileMenu = () => {
 }
 
 onMounted(() => {
-  // Cek apakah ada user yang sedang login di Local Storage
   const currentUser = JSON.parse(localStorage.getItem('currentUser'))
 
   if (currentUser) {
     isLoggedIn.value = true // Ubah tombol Login menjadi Dashboard
 
-    // Tentukan arah rute berdasarkan Role (Pangkat)
     if (currentUser.role === 'superadmin') {
       dashboardRoute.value = '/dashboard-superadmin'
     } else if (currentUser.role === 'admin') {
@@ -142,11 +140,10 @@ onMounted(() => {
   }
 })
 
-// Tambahkan fungsi ini di dalam <script setup>
 const scrollToTop = () => {
   window.scrollTo({
     top: 0,
-    behavior: 'smooth', // Membuat efek gulir ke atas jadi halus dan estetik
+    behavior: 'smooth', // Membuat efek gulir ke atas
   })
 }
 </script>

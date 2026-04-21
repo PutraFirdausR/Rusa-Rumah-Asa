@@ -31,7 +31,7 @@ const router = createRouter({
       meta: { hideNavbar: true },
     },
 
-    // --- ROUTE UNTUK DASHBOARD (Ditambah requiresAuth) ---
+    // --- ROUTE UNTUK DASHBOARD  ---
 
     {
       path: '/dashboard-admin',
@@ -82,7 +82,6 @@ const router = createRouter({
   ],
 })
 
-// --- SATPAM ROUTER (Navigation Guard) ---
 router.beforeEach((to, from, next) => {
   // Cek apakah ada data user yang sedang login di localStorage
   const isAuthenticated = localStorage.getItem('currentUser') !== null

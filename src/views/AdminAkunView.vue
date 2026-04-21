@@ -4,7 +4,7 @@
     role="admin"
     roleName="Administrator"
     :userEmail="currentAdminEmail"
-    :menus="adminMenus"
+    :menu="adminMenu"
     title="RUSA ADMIN | Panel Kontrol"
     @logout="handleLogout"
   >
@@ -230,7 +230,7 @@ const newUser = ref({
 })
 
 // Definisi Menu Khusus Admin
-const adminMenus = [
+const adminMenu = [
   { label: 'Kelola Artikel', path: '/dashboard-admin', icon: 'fas fa-newspaper' },
   { label: 'Akun Pengguna', path: '/admin-akun', icon: 'fas fa-user-shield' },
 ]
@@ -286,7 +286,7 @@ const simpanPengguna = () => {
 
   alert('Penulis/Pengguna baru berhasil ditambahkan!')
   tutupModal()
-  loadUsers() // Segarkan tabel
+  loadUsers()
 }
 
 // Fungsi Hapus Pengguna

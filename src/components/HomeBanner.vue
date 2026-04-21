@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue'
-import { globalBanners } from '@/store/bannerStore' // Panggil brankas global
+import { globalBanners } from '@/store/bannerStore'
 
 // Otomatis menyesuaikan data jika admin mematikan/menghapus banner
 const activeBanners = computed(() => {

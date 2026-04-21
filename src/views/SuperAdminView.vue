@@ -4,7 +4,7 @@
     role="superadmin"
     roleName="SUPER ADMIN"
     userEmail="Pusat Kendali"
-    :menus="superAdminMenus"
+    :menu="superAdminMenu"
     @logout="handleLogout"
   >
     <div class="mb-8">
@@ -205,7 +205,7 @@ const router = useRouter()
 const selectedTheme = ref('merah')
 const maintenanceMode = ref(false)
 
-const superAdminMenus = [
+const superAdminMenu = [
   { label: 'Pusat Kendali', path: '/dashboard-superadmin', icon: 'fas fa-server' },
   { label: 'Pengaturan Sekolah', path: '/superadmin-akses', icon: 'fas fa-school' },
 ]

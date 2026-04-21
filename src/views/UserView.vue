@@ -4,7 +4,7 @@
     role="user"
     roleName="Penulis"
     :userEmail="userEmail"
-    :menus="userMenus"
+    :menu="userMenu"
     title="RUSA | Bermain Sambil Belajar"
     @logout="handleLogout"
   >
@@ -93,7 +93,7 @@ const stats = ref({ pending: 0, approved: 0, rejected: 0 })
 const chartCanvas = ref(null)
 
 // Definisi Menu untuk Sidebar User
-const userMenus = [
+const userMenu = [
   { label: 'Dashboard', path: '/user-dashboard', icon: 'fas fa-tachometer-alt' },
   { label: 'Artikel Saya', path: '/user-artikel', icon: 'fas fa-newspaper' },
 ]

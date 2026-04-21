@@ -4,7 +4,7 @@
     role="admin"
     roleName="Administrator"
     :userEmail="userEmail"
-    :menus="adminMenus"
+    :menu="adminMenu"
     @logout="handleLogout"
   >
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
@@ -227,7 +227,7 @@ const showModal = ref(false)
 const selectedArticle = ref(null)
 
 // Menu Khusus Admin
-const adminMenus = [
+const adminMenu = [
   { label: 'Kelola Artikel', path: '/dashboard-admin', icon: 'fas fa-newspaper' },
   { label: 'Akun Pengguna', path: '/admin-akun', icon: 'fas fa-user-shield' },
 ]
@@ -238,8 +238,7 @@ const lihatWeb = () => {
 }
 
 const exportPDF = () => {
-  // Anda bisa mengintegrasikan library seperti jsPDF atau memanggil API backend disini
-  alert('Fitur Export PDF sedang diproses...')
+  alert('Fitur sedang proses pembuatan')
 }
 
 const seedDatabase = () => {

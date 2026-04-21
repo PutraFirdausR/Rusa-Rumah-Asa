@@ -4,7 +4,7 @@
     role="user"
     roleName="Penulis"
     :userEmail="userEmail"
-    :menus="userMenus"
+    :menu="userMenu"
     @logout="handleLogout"
   >
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
@@ -347,7 +347,7 @@ const formData = ref({
   status: 'pending',
 })
 
-const userMenus = [
+const userMenu = [
   { label: 'Dashboard', path: '/user-dashboard', icon: 'fas fa-tachometer-alt' },
   { label: 'Artikel Saya', path: '/user-artikel', icon: 'fas fa-file-alt' },
 ]

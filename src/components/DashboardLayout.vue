@@ -61,22 +61,19 @@
 
       <nav class="flex-1 py-6 overflow-y-auto overflow-x-hidden relative z-10">
         <ul class="space-y-2">
-          <li v-for="(menu, index) in menus" :key="index">
+          <li v-for="(menu, index) in menu" :key="index">
             <router-link
               :to="menu.path"
               :class="[
                 'transition-all group relative rounded-xl flex',
-                // Mode Kecil: Susun ke bawah
                 isCollapsed
                   ? 'flex-col items-center justify-center py-3 px-1 mx-2 gap-1.5'
                   : 'items-center gap-3 py-3 px-4 mx-4',
-                // Default Class (Tidak Aktif) - Efek hover normal
                 theme === 'dark'
                   ? 'text-gray-400 hover:bg-white/10 hover:text-white'
                   : 'text-white/80 hover:bg-white/20 hover:text-white',
               ]"
               :exact-active-class="
-                // KUNCI JAWABAN: Tambahkan hover:!bg-white agar saat aktif kebal di-hover
                 theme === 'dark'
                   ? '!bg-linear-to-r from-yellow-400 to-orange-500 !text-white font-bold shadow-lg shadow-orange-500/20 hover:!text-white'
                   : '!bg-white !text-[#ea7379] font-bold shadow-md hover:!bg-white hover:!text-[#ea7379]'
@@ -151,7 +148,7 @@ const props = defineProps({
   role: { type: String, default: 'user' },
   roleName: { type: String, default: 'Penulis' },
   userEmail: { type: String, required: true },
-  menus: { type: Array, required: true },
+  menu: { type: Array, required: true },
 })
 
 defineEmits(['logout'])

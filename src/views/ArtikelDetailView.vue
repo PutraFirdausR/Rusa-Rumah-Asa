@@ -191,11 +191,11 @@ const article = ref(null)
 const newComment = ref('')
 const showLoginModal = ref(false)
 
-// Tambahkan variabel isLoading untuk mengontrol animasi muter
+// variabel isLoading untuk mengontrol animasi muter
 const isLoading = ref(true)
 
 onMounted(() => {
-  // Berikan jeda sebentar agar loading terlihat mulus (tidak nge-glitch)
+  // jeda sebentar agar loading terlihat mulus
   setTimeout(() => {
     try {
       const rawData = localStorage.getItem('articles_db')

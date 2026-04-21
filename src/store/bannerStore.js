@@ -1,7 +1,5 @@
-// src/store/bannerStore.js
 import { ref } from 'vue'
 
-// Pindahkan data statis kamu ke sini agar bisa diakses semua file
 export const globalBanners = ref([
   {
     id: 1,
