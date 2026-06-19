@@ -2,17 +2,17 @@
   <!-- Navbar dinamis menyesuaikan tema -->
   <nav
     :class="[
-      'w-full shadow-md sticky top-0 z-50 relative overflow-hidden transition-colors duration-500',
+      'w-full shadow-md sticky top-0 z-50 transition-colors duration-500',
       themeConfig[currentTheme].bg,
     ]"
   >
     <!-- Ornamen Geometris / Bubble -->
-    <div
-      class="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-white/10 rounded-full blur-xl pointer-events-none"
-    ></div>
-    <div
-      class="absolute bottom-0 left-20 w-16 h-16 bg-white/10 rounded-full blur-md pointer-events-none"
-    ></div>
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+      <div
+        class="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-white/10 rounded-full blur-xl"
+      ></div>
+      <div class="absolute bottom-0 left-20 w-16 h-16 bg-white/10 rounded-full blur-md"></div>
+    </div>
 
     <div class="max-w-285 w-full mx-auto px-4 py-3 flex items-center justify-between relative z-10">
       <router-link
@@ -84,21 +84,52 @@
 
     <!-- Mobile Menu -->
     <transition
-      enter-active-class="transition duration-200 ease-out"
-      enter-from-class="transform -translate-y-2 opacity-0"
+      enter-active-class="transition duration-300 ease-out"
+      enter-from-class="transform -translate-y-4 opacity-0"
       enter-to-class="transform translate-y-0 opacity-100"
-      leave-active-class="transition duration-150 ease-in"
+      leave-active-class="transition duration-200 ease-in"
       leave-from-class="transform translate-y-0 opacity-100"
-      leave-to-class="transform -translate-y-2 opacity-0"
+      leave-to-class="transform -translate-y-4 opacity-0"
     >
       <div
         v-if="isMobileMenuOpen"
         :class="[
-          'md:hidden border-t border-white/20 absolute w-full left-0 shadow-md',
+          'md:hidden absolute left-0 w-full top-[100%] border-t border-white/20 shadow-2xl z-[999] flex flex-col',
           themeConfig[currentTheme].bg,
         ]"
       >
-        <!-- Isi mobile menu sama seperti sebelumnya... -->
+        <!-- Isi Menu Mobile Lengkap -->
+        <router-link
+          to="/"
+          @click="closeMobileMenu"
+          class="px-6 py-4 text-white font-medium hover:bg-white/10 border-b border-white/10 flex items-center gap-3 transition-colors"
+        >
+          <i class="fas fa-home w-5 text-center"></i> Home
+        </router-link>
+
+        <router-link
+          to="/about"
+          @click="closeMobileMenu"
+          class="px-6 py-4 text-white font-medium hover:bg-white/10 border-b border-white/10 flex items-center gap-3 transition-colors"
+        >
+          <i class="fas fa-info-circle w-5 text-center"></i> Tentang
+        </router-link>
+
+        <router-link
+          to="/artikel"
+          @click="closeMobileMenu"
+          class="px-6 py-4 text-white font-medium hover:bg-white/10 border-b border-white/10 flex items-center gap-3 transition-colors"
+        >
+          <i class="fas fa-newspaper w-5 text-center"></i> Artikel
+        </router-link>
+
+        <router-link
+          to="/contact"
+          @click="closeMobileMenu"
+          class="px-6 py-4 text-white font-medium hover:bg-white/10 border-b border-white/10 flex items-center gap-3 transition-colors"
+        >
+          <i class="fas fa-address-book w-5 text-center"></i> Kontak
+        </router-link>
       </div>
     </transition>
   </nav>
