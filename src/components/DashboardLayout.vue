@@ -31,7 +31,7 @@
           class="shrink-0 w-11 h-11 bg-white rounded-full flex items-center justify-center border border-white/30 shadow-inner p-0.5"
         >
           <img
-            src="/src/assets/img/logorusa1.gif"
+            src="/img/logorusa1.gif"
             alt="Admin Logo"
             class="w-full h-full object-cover rounded-full"
           />

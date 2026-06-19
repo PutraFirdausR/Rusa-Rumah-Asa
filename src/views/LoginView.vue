@@ -17,7 +17,7 @@
 
       <div class="relative z-10 flex-1 flex items-center justify-center">
         <img
-          src="/src/assets/img/undraw_family.png"
+          src="/img/undraw_family.png"
           alt="Family Illustration"
           class="w-full h-auto max-w-lg object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-500"
         />
@@ -116,17 +116,9 @@ const isLoginMode = ref(true)
 const email = ref('')
 const password = ref('')
 
-const defaultUsers = [
-  { email: 'super@gmail', password: 'super@gmail', role: 'superadmin' },
-  { email: 'admin@gmail', password: 'Admin@gmail', role: 'admin' },
-  { email: 'tes@gmail', password: 'tes@gmail', role: 'user' },
-]
-
+// onMounted sekarang bisa dikosongkan karena kita tidak butuh data bohongan dari localStorage lagi
 onMounted(() => {
-  let usersDb = JSON.parse(localStorage.getItem('users_db'))
-  if (!usersDb) {
-    localStorage.setItem('users_db', JSON.stringify(defaultUsers))
-  }
+  // Biarkan kosong
 })
 
 const toggleMode = () => {
@@ -136,36 +128,51 @@ const toggleMode = () => {
 }
 
 const handleSubmit = () => {
-  let usersDb = JSON.parse(localStorage.getItem('users_db')) || []
-
   if (isLoginMode.value) {
-    const user = usersDb.find((u) => u.email === email.value && u.password === password.value)
+    // ---- PROSES LOGIN (Tembak ke login.php) ----
+    fetch('http://localhost/rusa-backend/login.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email.value, password: password.value }),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.status === 'sukses') {
+          alert(result.pesan)
+          // Simpan sesi login ke localStorage (hanya data user yang sedang aktif)
+          localStorage.setItem('currentUser', JSON.stringify(result.data))
 
-    if (user) {
-      alert(`Login berhasil! Selamat datang ${user.role}.`)
-      localStorage.setItem('currentUser', JSON.stringify(user))
-
-      if (user.role === 'superadmin') {
-        router.push('/dashboard-superadmin')
-      } else if (user.role === 'admin') {
-        router.push('/dashboard-admin')
-      } else {
-        router.push('/user-dashboard')
-      }
-    } else {
-      alert('Email atau password salah!')
-    }
+          // Arahkan sesuai role
+          if (result.data.role === 'superadmin') {
+            router.push('/dashboard-superadmin')
+          } else if (result.data.role === 'admin') {
+            router.push('/dashboard-admin')
+          } else {
+            router.push('/user-dashboard')
+          }
+        } else {
+          alert(result.pesan)
+        }
+      })
   } else {
-    const emailExists = usersDb.find((u) => u.email === email.value)
-    if (emailExists) {
-      alert('Email sudah terdaftar!')
-      return
-    }
-    const newUser = { email: email.value, password: password.value, role: 'user' }
-    usersDb.push(newUser)
-    localStorage.setItem('users_db', JSON.stringify(usersDb))
-    alert('Registrasi berhasil!')
-    isLoginMode.value = true
+    // ---- PROSES REGISTER (Tembak ke register.php) ----
+    fetch('http://localhost/rusa-backend/register.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email.value, password: password.value }),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.status === 'sukses') {
+          alert(result.pesan)
+          // Kembalikan ke mode login setelah sukses daftar
+          isLoginMode.value = true
+          email.value = ''
+          password.value = ''
+        } else {
+          alert(result.pesan)
+        }
+      })
   }
 }
 </script>

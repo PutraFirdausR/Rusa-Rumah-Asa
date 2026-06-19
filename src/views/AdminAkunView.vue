@@ -148,7 +148,7 @@
         </div>
 
         <div class="p-6 md:p-8 bg-white space-y-5">
-          <p class="text-sm text-gray-500">Tambahkan akses untuk penulis baru di platform RUSA.</p>
+          <p class="text-sm text-gray-500">Tambahkan akses untuk pengguna baru di platform RUSA.</p>
 
           <div>
             <label class="block text-sm font-semibold text-gray-700 mb-1.5">Alamat Email</label>
@@ -226,7 +226,7 @@ const showAddModal = ref(false)
 const newUser = ref({
   email: '',
   password: '',
-  role: 'user', // Default sebagai penulis
+  role: 'user',
 })
 
 // Definisi Menu Khusus Admin
@@ -243,11 +243,18 @@ onMounted(() => {
   loadUsers()
 })
 
+// 1. FUNGSI AMBIL DATA PENGGUNA DARI DATABASE MYSQL
 const loadUsers = () => {
-  const usersDb = JSON.parse(localStorage.getItem('users_db')) || []
-  usersList.value = usersDb
+  fetch('http://localhost/rusa-backend/get_users.php')
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.status === 'sukses') {
+        usersList.value = result.data
+      }
+    })
 }
 
+// Fitur Pencarian & Filter
 const filteredUsers = computed(() => {
   return usersList.value.filter((u) => {
     const matchSearch = u.email.toLowerCase().includes(searchQuery.value.toLowerCase())
@@ -256,9 +263,8 @@ const filteredUsers = computed(() => {
   })
 })
 
-// Fungsi Modal
 const bukaModal = () => {
-  newUser.value = { email: '', password: '', role: 'user' } // Reset form
+  newUser.value = { email: '', password: '', role: 'user' }
   showAddModal.value = true
 }
 
@@ -266,30 +272,31 @@ const tutupModal = () => {
   showAddModal.value = false
 }
 
-// Fungsi Simpan Pengguna Baru
+// 2. FUNGSI TAMBAH PENGGUNA KE DATABASE MYSQL
 const simpanPengguna = () => {
   if (!newUser.value.email || !newUser.value.password) {
     alert('Email dan Kata Sandi wajib diisi!')
     return
   }
 
-  // Cek apakah email sudah terdaftar
-  const exists = usersList.value.find((u) => u.email === newUser.value.email)
-  if (exists) {
-    alert('Alamat email sudah digunakan oleh pengguna lain!')
-    return
-  }
-
-  // Tambahkan ke database lokal
-  usersList.value.push({ ...newUser.value })
-  localStorage.setItem('users_db', JSON.stringify(usersList.value))
-
-  alert('Penulis/Pengguna baru berhasil ditambahkan!')
-  tutupModal()
-  loadUsers()
+  fetch('http://localhost/rusa-backend/add_user.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(newUser.value),
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.status === 'sukses') {
+        alert(result.pesan)
+        tutupModal()
+        loadUsers() // Refresh tabel agar data baru langsung muncul
+      } else {
+        alert(result.pesan)
+      }
+    })
 }
 
-// Fungsi Hapus Pengguna
+// 3. FUNGSI HAPUS PENGGUNA DARI DATABASE MYSQL
 const hapusPengguna = (email) => {
   if (email === currentAdminEmail.value) {
     alert('Anda tidak dapat menghapus akun Anda sendiri!')
@@ -302,10 +309,23 @@ const hapusPengguna = (email) => {
     return
   }
 
-  if (confirm(`Yakin ingin menghapus pengguna ${email}?`)) {
-    usersList.value = usersList.value.filter((u) => u.email !== email)
-    localStorage.setItem('users_db', JSON.stringify(usersList.value))
-    loadUsers()
+  if (
+    confirm(`Yakin ingin menghapus pengguna ${email}? Data yang terhapus tidak bisa dikembalikan.`)
+  ) {
+    fetch('http://localhost/rusa-backend/delete_user.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email }),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.status === 'sukses') {
+          alert(result.pesan)
+          loadUsers() // Refresh tabel agar akun yang dihapus menghilang
+        } else {
+          alert(result.pesan)
+        }
+      })
   }
 }
 

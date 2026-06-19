@@ -22,7 +22,7 @@ import ContactView from './ContactView.vue'
         </div>
         <div class="w-full md:w-1/2 flex justify-end">
           <img
-            src="/src/assets/img/back_to_scholl.png"
+            src="/img/back_to_scholl.png"
             alt="Ilustrasi"
             class="w-full max-w-lg object-contain drop-shadow-xl"
           />

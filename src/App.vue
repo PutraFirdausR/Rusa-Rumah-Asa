@@ -7,14 +7,20 @@ const route = useRoute()
 const isMaintenance = ref(false)
 
 onMounted(() => {
-  // Terapkan tema setiap kali web dibuka
-  const savedTheme = localStorage.getItem('app_theme') || 'merah'
-  document.documentElement.setAttribute('data-theme', savedTheme)
+  // Menarik tema dari MySQL menggunakan API get_theme.php
+  fetch('http://localhost/rusa-backend/get_theme.php')
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.status === 'sukses') {
+        document.documentElement.setAttribute('data-theme', result.tema)
+        // Menyimpan di localStorage sebagai cadangan sekunder
+        localStorage.setItem('app_theme', result.tema)
+      }
+    })
 
-  // Cek status maintenance dari localStorage
+  // Logika maintenance bawaan kamu biarkan saja seperti semula
   isMaintenance.value = localStorage.getItem('maintenance_mode') === 'true'
 
-  // Dengarkan perubahan status maintenance secara real-time dari SuperAdmin
   window.addEventListener('maintenance-changed', () => {
     isMaintenance.value = localStorage.getItem('maintenance_mode') === 'true'
   })

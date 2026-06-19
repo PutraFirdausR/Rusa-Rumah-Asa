@@ -1,10 +1,23 @@
 <script setup>
-import { computed } from 'vue'
-import { globalBanners } from '@/store/bannerStore'
+import { ref, onMounted, computed } from 'vue'
 
-// Otomatis menyesuaikan data jika admin mematikan/menghapus banner
+// Siapkan penampung data kosong
+const banners = ref([])
+
+// Tarik data langsung dari MySQL saat halaman depan dibuka
+onMounted(() => {
+  fetch('http://localhost/rusa-backend/get_banners.php')
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.status === 'sukses') {
+        banners.value = result.data
+      }
+    })
+})
+
+// Filter otomatis, hanya tampilkan banner yang status aktifnya true (1)
 const activeBanners = computed(() => {
-  return globalBanners.value.filter((banner) => banner.aktif === true)
+  return banners.value.filter((banner) => banner.aktif === true)
 })
 
 const bukaFile = (url) => {

@@ -352,73 +352,16 @@ const userMenu = [
   { label: 'Artikel Saya', path: '/user-artikel', icon: 'fas fa-file-alt' },
 ]
 
-const seedDatabase = () => {
-  let db = JSON.parse(localStorage.getItem('articles_db'))
-  if (!db || db.length === 0 || db[0].subtitle === undefined) {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'))
-    const myEmail = currentUser ? currentUser.email : 'tes@gmail.com'
-    db = [
-      {
-        id: 101,
-        title: 'All About Naruto',
-        subtitle: 'Mengenal Karakter Utama Anime',
-        header: 'Edukasi',
-        author: myEmail,
-        date: '18 Jun 2026',
-        excerpt: 'Naruto Uzumaki...',
-        image:
-          'https://images.unsplash.com/photo-1614583224978-f05ce51ef5fa?auto=format&fit=crop&q=80&w=400',
-        link: '',
-        status: 'approved',
-      },
-      {
-        id: 102,
-        title: 'All About Lebron James',
-        subtitle: 'Perjalanan Sang Raja Basket',
-        header: 'Olahraga',
-        author: myEmail,
-        date: '19 Jun 2026',
-        excerpt: 'LeBron James adalah pemain bola basket...',
-        image:
-          'https://images.unsplash.com/photo-1518063319789-7217e6706b04?auto=format&fit=crop&q=80&w=400',
-        link: '',
-        status: 'pending',
-      },
-      {
-        id: 103,
-        title: 'Keindahan Alam Indonesia',
-        subtitle: 'Surga Tersembunyi di Asia',
-        header: 'Pariwisata',
-        author: 'penulis_lain@rusa.com',
-        date: '20 Jun 2026',
-        excerpt: 'Indonesia menawarkan pemandangan...',
-        image:
-          'https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=400',
-        link: '',
-        status: 'approved',
-      },
-      {
-        id: 104,
-        title: 'Berita Kurang Valid',
-        subtitle: 'Contoh Artikel Ditolak',
-        header: 'Berita',
-        author: myEmail,
-        date: '21 Jun 2026',
-        excerpt: 'Ini adalah contoh artikel ditolak.',
-        image:
-          'https://images.unsplash.com/photo-1621539036980-607212c75a44?auto=format&fit=crop&q=80&w=400',
-        link: '',
-        status: 'rejected',
-      },
-    ]
-    localStorage.setItem('articles_db', JSON.stringify(db))
-  }
-  return db
-}
-
+// 1. MENGAMBIL DATA ARTIKEL DARI MYSQL
 const loadMyArticles = () => {
-  const articlesDb = seedDatabase()
-  myArticles.value = articlesDb.filter((a) => a.author === userEmail.value)
+  fetch('http://localhost/rusa-backend/get_articles.php')
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.status === 'sukses') {
+        // Hanya tampilkan artikel milik user yang sedang login
+        myArticles.value = result.data.filter((a) => a.author === userEmail.value)
+      }
+    })
 }
 
 onMounted(() => {
@@ -459,48 +402,57 @@ const bukaModalEdit = (article) => {
 
 const tutupModal = () => (showModal.value = false)
 
+// 2. MENYIMPAN ARTIKEL KE MYSQL
 const simpanArtikel = () => {
   if (!formData.value.title || !formData.value.excerpt || !formData.value.image) {
     alert('Lengkapi Judul, Gambar, dan Isi!')
     return
   }
-  let articlesDb = JSON.parse(localStorage.getItem('articles_db')) || []
 
-  if (isEditing.value) {
-    const index = articlesDb.findIndex((a) => a.id === formData.value.id)
-    if (index !== -1) {
-      formData.value.status = 'pending'
-      articlesDb[index] = { ...formData.value }
-    }
-  } else {
-    const tgl = new Date().toLocaleDateString('id-ID', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-    })
+  const tgl = new Date().toLocaleDateString('id-ID', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  })
 
-    // PERBAIKAN URUTAN DI SINI 👇
-    articlesDb.unshift({
-      ...formData.value, // Bongkar form lebih dulu (id masih null di sini)
-      id: Date.now(), // Buat ID unik setelahnya (null tertimpa jadi angka unik!)
-      author: userEmail.value,
-      date: tgl,
-      status: 'pending',
-    })
+  // Rakit data untuk dikirim ke PHP
+  const payload = {
+    ...formData.value,
+    author: userEmail.value,
+    date: tgl,
   }
 
-  localStorage.setItem('articles_db', JSON.stringify(articlesDb))
-  loadMyArticles()
-  tutupModal()
-  alert(isEditing.value ? 'Revisi diajukan ulang!' : 'Artikel berhasil dibuat!')
+  fetch('http://localhost/rusa-backend/add_article.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.status === 'sukses') {
+        alert(result.pesan)
+        loadMyArticles() // Refresh tabel agar data terbaru muncul
+        tutupModal()
+      } else {
+        alert(result.pesan)
+      }
+    })
 }
 
+// 3. MENGHAPUS ARTIKEL DARI MYSQL
 const hapusArtikel = (id) => {
   if (confirm('Yakin ingin menghapus artikel ini?')) {
-    let articlesDb = JSON.parse(localStorage.getItem('articles_db')) || []
-    articlesDb = articlesDb.filter((a) => a.id !== id)
-    localStorage.setItem('articles_db', JSON.stringify(articlesDb))
-    loadMyArticles()
+    fetch('http://localhost/rusa-backend/delete_article.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: id }),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.status === 'sukses') {
+          loadMyArticles() // Refresh tabel setelah data terhapus
+        }
+      })
   }
 }
 

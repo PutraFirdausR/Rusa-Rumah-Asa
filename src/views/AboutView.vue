@@ -1,16 +1,9 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 
-// 1. Import gambar secara langsung
-import img1 from '@/assets/img/rusa1.jpg'
-import img2 from '@/assets/img/rusa2.jpg'
-import img3 from '@/assets/img/rusa3.jpg'
-// Catatan: Jika '@' tidak jalan, gunakan relative path seperti '../assets/img/rusa1.jpg'
-
 const currentSlide = ref(0)
 
-// 2. Masukkan variabel hasil import ke dalam array
-const images = [img1, img2, img3]
+const images = ['/img/rusa1.jpg', '/img/rusa2.jpg', '/img/rusa3.jpg']
 
 const nextSlide = () => {
   currentSlide.value = (currentSlide.value + 1) % images.length

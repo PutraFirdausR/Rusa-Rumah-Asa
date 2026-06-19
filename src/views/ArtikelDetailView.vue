@@ -6,7 +6,11 @@
           <h3 class="font-bold text-gray-800 mb-4 text-lg">Kembali ke Daftar</h3>
           <button
             @click="router.push('/artikel')"
-            class="w-full border bg-[#ea7379] text-[white] rounded-xl px-4 py-3 text-sm hover:bg-[#9c001f] font-bold transition-colors flex items-center justify-center gap-2 shadow-sm"
+            :class="[
+              'w-full border text-[white] rounded-xl px-4 py-3 text-sm font-bold transition-colors flex items-center justify-center gap-2 shadow-sm',
+              themeConfig[currentTheme].bg,
+              themeConfig[currentTheme].bgHover,
+            ]"
           >
             <i class="fas fa-arrow-left"></i> Semua Artikel
           </button>
@@ -18,7 +22,7 @@
           v-if="isLoading"
           class="bg-white p-20 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center"
         >
-          <i class="fas fa-spinner fa-spin text-4xl text-[#ea7379] mb-4"></i>
+          <i :class="['fas fa-spinner fa-spin text-4xl mb-4', themeConfig[currentTheme].text]"></i>
           <h3 class="text-xl font-bold text-gray-800">Memuat Artikel...</h3>
           <p class="text-gray-500 mt-2 text-sm">Mohon tunggu sebentar.</p>
         </div>
@@ -30,7 +34,10 @@
           <div class="flex items-center gap-3 text-sm text-gray-500 mb-4">
             <span
               v-if="article.header"
-              class="bg-[#ea7379]/10 text-[#ea7379] px-3 py-1 rounded-full font-bold uppercase text-[10px] tracking-wider"
+              :class="[
+                'px-3 py-1 rounded-full font-bold uppercase text-[10px] tracking-wider',
+                themeConfig[currentTheme].badge,
+              ]"
               >{{ article.header }}</span
             >
             <span class="flex items-center gap-1"
@@ -46,7 +53,8 @@
           </h2>
 
           <p class="text-sm text-gray-500 mb-8 pb-6 border-b border-gray-100">
-            Ditulis oleh <span class="font-bold text-[#ea7379]">{{ article.author }}</span>
+            Ditulis oleh
+            <span :class="['font-bold', themeConfig[currentTheme].text]">{{ article.author }}</span>
           </p>
 
           <div
@@ -64,16 +72,24 @@
 
           <div
             v-if="article.link"
-            class="mb-10 p-5 bg-blue-50/50 border border-blue-100 rounded-xl"
+            :class="[
+              'mb-10 p-5 border rounded-xl',
+              themeConfig[currentTheme].boxBg,
+              themeConfig[currentTheme].boxBorder,
+            ]"
           >
             <p class="text-sm">
-              <strong class="text-blue-900 flex items-center gap-2 mb-1"
-                ><i class="fas fa-link"></i> Sumber Referensi:</strong
-              >
+              <strong :class="['flex items-center gap-2 mb-1', themeConfig[currentTheme].textDark]">
+                <i class="fas fa-link"></i> Sumber Referensi:
+              </strong>
               <a
                 :href="article.link"
                 target="_blank"
-                class="text-blue-600 hover:text-blue-800 font-medium hover:underline break-all transition-colors"
+                :class="[
+                  'font-medium hover:underline break-all transition-colors',
+                  themeConfig[currentTheme].textLink,
+                  themeConfig[currentTheme].textHover,
+                ]"
                 >{{ article.link }}</a
               >
             </p>
@@ -85,7 +101,10 @@
             </h3>
 
             <div
-              class="bg-gray-50 p-6 rounded-2xl border border-gray-200 mb-8 focus-within:bg-white focus-within:shadow-md focus-within:border-blue-200 transition-all duration-300"
+              :class="[
+                'bg-gray-50 p-6 rounded-2xl border border-gray-200 mb-8 focus-within:bg-white focus-within:shadow-md transition-all duration-300',
+                themeConfig[currentTheme].focusBorder,
+              ]"
             >
               <label class="block font-bold text-gray-700 mb-3 text-sm">Tulis Komentar Anda</label>
               <textarea
@@ -97,17 +116,25 @@
               <div class="flex justify-end border-t border-gray-200 pt-3">
                 <button
                   @click="kirimKomentar"
-                  class="bg-[#ea7379] hover:bg-[#d9656b] text-white px-6 py-2.5 rounded-xl font-bold text-sm transition-all shadow-md shadow-[#ea7379]/20 hover:-translate-y-0.5"
+                  :class="[
+                    'text-white px-6 py-2.5 rounded-xl font-bold text-sm transition-all shadow-md hover:-translate-y-0.5',
+                    themeConfig[currentTheme].bg,
+                    themeConfig[currentTheme].bgHover,
+                  ]"
                 >
                   <i class="fas fa-paper-plane mr-1"></i> Kirim
                 </button>
               </div>
             </div>
 
+            <!-- Komentar Bawaan -->
             <div class="space-y-6">
               <div class="flex gap-4">
                 <div
-                  class="w-12 h-12 rounded-full bg-linear-to-tr from-blue-400 to-blue-600 flex items-center justify-center text-white font-bold shrink-0 shadow-sm border-2 border-white"
+                  :class="[
+                    'w-12 h-12 rounded-full flex items-center justify-center text-white font-bold shrink-0 shadow-sm border-2 border-white bg-linear-to-tr',
+                    themeConfig[currentTheme].gradient,
+                  ]"
                 >
                   A
                 </div>
@@ -132,6 +159,7 @@
       </section>
     </main>
 
+    <!-- Modal Login -->
     <div
       v-if="showLoginModal"
       class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 transition-opacity animate-fadeIn"
@@ -143,7 +171,7 @@
           class="bg-gray-50 px-6 py-4 border-b border-gray-100 flex justify-between items-center"
         >
           <h3 class="font-bold text-gray-800 flex items-center gap-2">
-            <i class="fas fa-lock text-[#ea7379]"></i> Akses Terbatas
+            <i :class="['fas fa-lock', themeConfig[currentTheme].text]"></i> Akses Terbatas
           </h3>
           <button
             @click="showLoginModal = false"
@@ -154,7 +182,10 @@
         </div>
         <div class="p-8 text-center">
           <div
-            class="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-500 text-2xl"
+            :class="[
+              'w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl',
+              themeConfig[currentTheme].badge,
+            ]"
           >
             <i class="fas fa-user-circle"></i>
           </div>
@@ -170,7 +201,11 @@
             </button>
             <button
               @click="router.push('/login')"
-              class="px-6 py-2.5 bg-blue-500 text-white rounded-xl hover:bg-blue-600 font-bold text-sm transition-all shadow-md flex items-center justify-center gap-2 w-full sm:w-auto hover:-translate-y-0.5"
+              :class="[
+                'text-white rounded-xl font-bold text-sm transition-all shadow-md flex items-center justify-center gap-2 w-full sm:w-auto hover:-translate-y-0.5 px-6 py-2.5',
+                themeConfig[currentTheme].bg,
+                themeConfig[currentTheme].bgHover,
+              ]"
             >
               <i class="fas fa-sign-in-alt"></i> Login Sekarang
             </button>
@@ -182,7 +217,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
@@ -190,46 +225,89 @@ const router = useRouter()
 const article = ref(null)
 const newComment = ref('')
 const showLoginModal = ref(false)
-
-// variabel isLoading untuk mengontrol animasi muter
 const isLoading = ref(true)
 
+// SISTEM TEMA DINAMIS
+const currentTheme = ref('merah')
+
+const themeConfig = {
+  merah: {
+    text: 'text-[#ea7379]',
+    bg: 'bg-[#ea7379]',
+    bgHover: 'hover:bg-[#d9656b]',
+    badge: 'bg-[#ea7379]/10 text-[#ea7379]',
+    boxBg: 'bg-red-50/50',
+    boxBorder: 'border-red-100',
+    textDark: 'text-red-900',
+    textLink: 'text-red-600',
+    textHover: 'hover:text-red-800',
+    focusBorder: 'focus-within:border-red-200',
+    gradient: 'from-[#ea7379] to-[#d9656b]',
+  },
+  biru: {
+    text: 'text-blue-500',
+    bg: 'bg-blue-500',
+    bgHover: 'hover:bg-blue-600',
+    badge: 'bg-blue-500/10 text-blue-500',
+    boxBg: 'bg-blue-50/50',
+    boxBorder: 'border-blue-100',
+    textDark: 'text-blue-900',
+    textLink: 'text-blue-600',
+    textHover: 'hover:text-blue-800',
+    focusBorder: 'focus-within:border-blue-200',
+    gradient: 'from-blue-400 to-blue-600',
+  },
+  hijau: {
+    text: 'text-emerald-500',
+    bg: 'bg-emerald-500',
+    bgHover: 'hover:bg-emerald-600',
+    badge: 'bg-emerald-500/10 text-emerald-500',
+    boxBg: 'bg-emerald-50/50',
+    boxBorder: 'border-emerald-100',
+    textDark: 'text-emerald-900',
+    textLink: 'text-emerald-600',
+    textHover: 'hover:text-emerald-800',
+    focusBorder: 'focus-within:border-emerald-200',
+    gradient: 'from-emerald-400 to-emerald-600',
+  },
+}
+
+const checkTheme = () => {
+  currentTheme.value = localStorage.getItem('app_theme') || 'merah'
+}
+
 onMounted(() => {
-  // jeda sebentar agar loading terlihat mulus
-  setTimeout(() => {
-    try {
-      const rawData = localStorage.getItem('articles_db')
-      const articlesDb = rawData ? JSON.parse(rawData) : []
+  // Pasang Listener Tema
+  checkTheme()
+  window.addEventListener('theme-changed', checkTheme)
 
-      const articleId = route.params.id
+  const articleId = route.params.id
 
-      // --- TAMBAHAN UNTUK DEBUGGING ---
-      console.log('🔍 ID dari URL:', articleId)
-      console.log('📚 Isi Database Artikel:', articlesDb)
-      // --------------------------------
-
-      // Cari artikel yang ID nya cocok
-      const found = articlesDb.find(
-        (a) => a.id != null && a.id.toString() === articleId?.toString(),
-      )
-
-      if (found) {
-        article.value = found
-      } else {
-        alert(
-          `Maaf, artikel dengan ID "${articleId}" tidak ditemukan. Cek Console (F12) untuk melihat data.`,
-        )
-        router.push('/artikel')
+  fetch('http://localhost/rusa-backend/get_articles.php')
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.status === 'sukses') {
+        const found = result.data.find((a) => a.id.toString() === articleId.toString())
+        if (found) {
+          article.value = found
+        } else {
+          alert('Artikel tidak ditemukan.')
+          router.push('/artikel')
+        }
       }
-    } catch (error) {
-      console.error('Terjadi kesalahan saat memuat data:', error)
-      alert('Terjadi kesalahan pada sistem saat memuat artikel.')
+    })
+    .catch((error) => {
+      console.error('Error fetching article:', error)
+      alert('Terjadi kesalahan saat memuat artikel.')
       router.push('/artikel')
-    } finally {
-      // Pastikan loading dimatikan, apapun yang terjadi (sukses/error)
+    })
+    .finally(() => {
       isLoading.value = false
-    }
-  }, 400)
+    })
+})
+
+onUnmounted(() => {
+  window.removeEventListener('theme-changed', checkTheme)
 })
 
 const kirimKomentar = () => {
@@ -241,7 +319,7 @@ const kirimKomentar = () => {
       alert('Komentar tidak boleh kosong!')
       return
     }
-    alert('Komentar berhasil ditambahkan (Mode Simulasi)!')
+    alert('Komentar berhasil ditambahkan (Fitur masih mode Simulasi)!')
     newComment.value = ''
   }
 }

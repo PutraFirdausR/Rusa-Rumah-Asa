@@ -262,12 +262,29 @@ onMounted(() => {
   selectedTheme.value = savedTheme
 })
 
-// 2. FUNGSI TERAPKAN TEMA
+// FUNGSI TERAPKAN TEMA KE DATABASE
+// FUNGSI TERAPKAN TEMA KE DATABASE
 const terapkanTema = () => {
-  localStorage.setItem('app_theme', selectedTheme.value)
-  document.documentElement.setAttribute('data-theme', selectedTheme.value)
+  fetch('http://localhost/rusa-backend/update_theme.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ tema: selectedTheme.value }),
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.status === 'sukses') {
+        // Terapkan ke HTML
+        document.documentElement.setAttribute('data-theme', selectedTheme.value)
+        localStorage.setItem('app_theme', selectedTheme.value)
 
-  alert(`Berhasil! Tema website utama diubah menjadi: ${selectedTheme.value.toUpperCase()}`)
+        // BERTERIAK KE KOMPONEN LAIN BAHWA TEMA GANTI (Ini Kuncinya!)
+        window.dispatchEvent(new Event('theme-changed'))
+
+        alert(result.pesan)
+      } else {
+        alert('Gagal mengubah tema: ' + result.pesan)
+      }
+    })
 }
 
 const goToWeb = () => router.push('/')
