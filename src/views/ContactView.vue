@@ -1,8 +1,8 @@
 <template>
   <div
-    class="h-[calc(100vh-65px)] flex flex-col font-sans border-t border-gray-100 overflow-hidden bg-gray-50/30"
+    class="min-h-[calc(100vh-65px)] flex flex-col font-sans border-t border-gray-100 overflow-x-hidden bg-gray-50/30"
   >
-    <main class="flex-1 max-w-285 w-full mx-auto px-4 py-6 flex flex-col min-h-0 relative z-10">
+    <main class="flex-1 max-w-285 w-full mx-auto px-4 py-6 flex flex-col relative z-10">
       <h1
         class="shrink-0 text-[28px] md:text-[32px] font-bold text-gray-800 text-center mb-6 flex items-center justify-center gap-3"
       >
@@ -11,7 +11,7 @@
       </h1>
 
       <div
-        class="flex-1 bg-white rounded-2xl shadow-xl shadow-gray-200/50 border border-gray-100 flex flex-col md:flex-row overflow-hidden min-h-0"
+        class="flex-1 bg-white rounded-2xl shadow-xl shadow-gray-200/50 border border-gray-100 flex flex-col md:flex-row overflow-hidden"
       >
         <div class="w-full md:w-1/2 p-6 md:p-8 flex flex-col justify-center overflow-y-auto">
           <form @submit.prevent="submitForm">
@@ -68,7 +68,7 @@
           </form>
         </div>
 
-        <div class="w-full md:w-1/2 bg-gray-200 relative min-h-75 md:min-h-0 h-full">
+        <div class="w-full md:w-1/2 bg-gray-200 relative min-h-[300px]">
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3959.561520817491!2d110.4080523!3d-7.0606941999999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7089425c802481%3A0x745e54e4b1f6f7b1!2sPAUD%20RUSA%20DAN%20BIMBEL%20BANYUMANIK%20SEMARANG!5e0!3m2!1sen!2sid!4v1776395006198!5m2!1sen!2sid"
             class="absolute inset-0 w-full h-full border-0 grayscale hover:grayscale-0 transition-all duration-700"
@@ -80,14 +80,12 @@
       </div>
     </main>
 
-    <!-- Footer Dinamis dengan Ornamen SVG -->
     <footer
       :class="[
         'shrink-0 pt-12 pb-6 w-full relative transition-colors duration-500 mt-8',
         themeConfig[currentTheme].bg,
       ]"
     >
-      <!-- Ornamen SVG Ombak (Wave) -->
       <div class="absolute top-0 left-0 w-full overflow-hidden leading-none -translate-y-[99%]">
         <svg
           class="relative block w-full h-10"
